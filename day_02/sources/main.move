@@ -15,6 +15,16 @@ module challenge::day_02 {
     //     // Your code here
     // }
 
+    public fun sum(x: u64, y: u64): u64 {
+        (x + y)
+    }
+
+    #[test]
+    fun test_func() {
+        let sum_val: u64 = sum(10, 5);
+        assert_eq!(sum_val, 15);
+    }
+
     // TODO: Write a test function that checks sum(1, 2) == 3
     // #[test]
     // fun test_sum() {
