@@ -10,6 +10,7 @@
 module challenge::day_07 {
     use std::vector;
     use std::string::{Self, String};
+    use std::bool;
 
     // Copy from day_06: Habit struct with String
     public struct Habit has copy, drop {
@@ -63,6 +64,20 @@ module challenge::day_07 {
     //     // Use b"Exercise".to_string() to create a String
     // }
 
+    #[test]
+    fun test_add_habits(){
+        let mut my_list: HabitList = empty_list();
+
+        let habit1: Habit = new_habit(b"Exercise".to_string());
+        let habit2: Habit = new_habit(b"Drink Water".to_string());
+
+        add_habit(&mut my_list, habit1);
+        add_habit(&mut my_list, habit2);
+        
+        let is_two: bool = vector::length(&my_list.habits) == 2;
+        assert!(is_two);
+    }
+
     // TODO: Write a test 'test_complete_habit' that:
     // - Creates a list and adds a habit
     // - Completes the habit
@@ -71,5 +86,20 @@ module challenge::day_07 {
     // fun test_complete_habit() {
     //     // Your code here
     // }
+
+    #[test]
+    fun test_complete_habit(){
+        let mut my_list: HabitList = empty_list();
+
+        let habit1: Habit = new_habit(b"Exercise".to_string());
+        let habit2: Habit = new_habit(b"Drink Water".to_string());
+
+        add_habit(&mut my_list, habit1);
+        add_habit(&mut my_list, habit2);
+        complete_habit(&mut my_list, 0);
+
+        let is_completed: bool = vector::borrow(&my_list.habits, 0).completed;
+        assert!(is_completed);
+    }
 }
 
