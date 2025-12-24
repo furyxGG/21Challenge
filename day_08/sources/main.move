@@ -17,10 +17,24 @@ module challenge::day_08 {
     //     // Your fields here
     // }
 
+    public struct Task has copy, drop {
+        title: String,
+        reward: u64,
+        done: bool,
+    }
+
     // TODO: Write a constructor function 'new_task'
     // that takes title and reward, returns a Task with done = false
     // public fun new_task(title: String, reward: u64): Task {
     //     // Your code here
     // }
+
+    public fun new_task(title: String, reward: u64): Task {
+        Task{ 
+            title,
+            reward,
+            done: false,
+        }
+    }
 }
 
