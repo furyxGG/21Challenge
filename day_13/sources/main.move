@@ -11,6 +11,7 @@ module challenge::day_13 {
     use std::vector;
     use std::string::String;
     use std::option::{Self, Option};
+    use std::vector::count;
 
     // Copy from day_12: All structs and functions
     public enum TaskStatus has copy, drop {
@@ -71,6 +72,18 @@ module challenge::day_13 {
     //     // Loop through tasks, add each reward to total
     // }
 
+    public fun total_reward(board: &TaskBoard): u64 {
+        let mut total: u64 = 0;
+        let len: u64 = vector::length(&board.tasks);
+        let mut a: u64 = 0;
+        while (a < len){
+            let task = vector::borrow(&board.tasks, a);
+            total = total + task.reward;
+            a = a + 1;
+        };
+        total
+    }
+
     // TODO: Write a function 'completed_count' that:
     // - Takes board: &TaskBoard
     // - Returns u64 (count of completed tasks)
@@ -78,5 +91,19 @@ module challenge::day_13 {
     // public fun completed_count(board: &TaskBoard): u64 {
     //     // Your code here
     // }
+
+    public fun completed_count(board: &TaskBoard): u64 {
+        let mut count: u64 = 0;
+        let mut a: u64 = 0;
+        let len: u64 = vector::length(&board.tasks);
+        while (a < len) {
+            let task = vector::borrow(&board.tasks, a);
+            if (task.status == TaskStatus::Completed) {
+                count = count + 1;
+            };
+            a = a + 1;
+        };
+        count
+    }
 }
 
