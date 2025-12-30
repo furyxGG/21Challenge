@@ -15,6 +15,7 @@ module challenge::day_14 {
     #[test_only]
     use std::unit_test::assert_eq;
     use std::string;
+    use std::address;
 
     // Copy from day_13: All structs and functions
     public enum TaskStatus has copy, drop {
@@ -90,12 +91,41 @@ module challenge::day_14 {
     // - Create a board with an owner
     // - Add a task
     // - Verify the task was added
-    // 
+    
+    #[test]
+    public fun test_create_board_and_add_task(){
+        let owner: address = @0x1;
+        let mut board: TaskBoard = new_board(owner);
+        let task = new_task(b"do your job".to_string(), 15);
+
+        add_task(&mut board, task);
+        let temp = vector::length(&board.tasks);
+        assert_eq!(temp, 1);
+    }
+
     // Test 2: test_complete_task
     // - Create board, add tasks
     // - Complete a task
     // - Verify completed_count is correct
-    // 
+    
+    #[test]
+    public fun test_complete_task(){
+        let owner: address = @0x1;
+        let mut board: TaskBoard = new_board(owner);
+        let task = new_task(b"do your job".to_string(), 15);
+        let task2 = new_task(b"do your job2".to_string(), 30);
+        let task3 = new_task(b"do your job3".to_string(), 45);
+
+        add_task(&mut board, task);
+        add_task(&mut board, task2);
+        add_task(&mut board, task3);
+
+        let mut tempTask = vector::borrow_mut(&mut board.tasks, 0); //yani ilk task ı ödünç alıyoruz
+        complete_task(tempTask);
+
+        assert_eq!(completed_count(&board), 1); // 1 adet task tamamlandığı için doğru oluyor.
+    }
+
     // Test 3: test_total_reward
     // - Create board, add multiple tasks with different rewards
     // - Verify total_reward is correct
@@ -104,5 +134,20 @@ module challenge::day_14 {
     // fun test_create_board_and_add_task() {
     //     // Your code here
     // }
+
+    #[test]
+    public fun test_total_reward(){
+        let owner: address = @0x1;
+        let mut board: TaskBoard = new_board(owner);
+        let task = new_task(b"do your job".to_string(), 15);
+        let task2 = new_task(b"do your job2".to_string(), 30);
+        let task3 = new_task(b"do your job3".to_string(), 45);
+
+        add_task(&mut board, task);
+        add_task(&mut board, task2);
+        add_task(&mut board, task3);
+
+        assert_eq!(total_reward(&board), 90);
+    }
 }
 
