@@ -94,6 +94,12 @@ module challenge::day_17 {
     //     // Your code here
     // }
 
+    entry fun create_farm(ctx: &mut TxContext) {
+        let farm = new_farm(ctx);
+
+        transfer::share_object(farm);
+    }
+
     // TODO: Write a function 'plant_on_farm' that:
     // - Takes farm: &mut Farm, plotId: u8
     // - Calls plant() on farm.counters with plotId
@@ -101,11 +107,19 @@ module challenge::day_17 {
     //     // Your code here
     // }
 
+    fun plant_on_farm(farm: &mut Farm, plotId: u8) {
+        plant(&mut farm.counters, plotId);
+    }
+
     // TODO: Write a function 'harvest_from_farm' that:
     // - Takes farm: &mut Farm, plotId: u8
     // - Calls harvest() on farm.counters with plotId
     // fun harvest_from_farm(farm: &mut Farm, plotId: u8) {
     //     // Your code here
     // }
+
+    fun harvest_from_farm(farm: &mut Farm, plotId: u8) {
+        harvest(&mut farm.counters, plotId);
+    }
 }
 
