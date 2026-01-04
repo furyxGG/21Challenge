@@ -10,7 +10,6 @@
 
 
 module challenge::day_19 {
-   
 
     const MAX_PLOTS: u64 = 20;
     const E_PLOT_NOT_FOUND: u64 = 1;
@@ -88,7 +87,7 @@ module challenge::day_19 {
 
     entry fun create_farm(ctx: &mut TxContext) {
         let farm = new_farm(ctx);
-        transfer::transfer(farm, sender(ctx));
+        transfer::transfer(farm, tx_context::sender(ctx));
     }
 
     fun plant_on_farm(farm: &mut Farm, plotId: u8) {
@@ -114,6 +113,10 @@ module challenge::day_19 {
     //     // Your code here
     // }
 
+    fun total_planted(farm: &Farm): u64 {
+        farm.counters.planted
+    }
+
     // TODO: Write a function 'total_harvested' that:
     // - Takes farm: &Farm
     // - Returns u64 (the harvested count)
@@ -121,9 +124,28 @@ module challenge::day_19 {
     //     // Your code here
     // }
 
+    fun total_harvested(farm: &Farm): u64 {
+        farm.counters.harvested
+    }
+
     // TODO: (Optional) Write a test that:
     // - Creates a farm
     // - Plants once
     // - Checks that total_planted returns 1
+
+    #[test]
+    fun test_totalplanted() {
+        use sui::test_scenario;
+
+        let mut scenario = test_scenario::begin(@0x1);
+        let ctx = test_scenario::ctx(&mut scenario);
+        let mut farm = new_farm(ctx);
+
+        plant_on_farm(&mut farm, 1);
+        assert!(total_planted(&farm) == 1, 1);
+        transfer::transfer(farm, @0x1);
+
+        test_scenario::end(scenario);
+    }
 }
 
